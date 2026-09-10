@@ -1,0 +1,9 @@
+Spotify Recommendation Lab Report
+
+The goal of this lab was to build and evaluate song recommendation systems using word count vectors. The evaluation metric was precision at 3, the share of top three recommendation slots that match the query song's genre, with the query song and all songs by the same artist excluded.
+
+The baseline methods performed very differently. The raw dot product was the worst at 9.3 percent because it rewards songs with more words that overlap on generic words like i, and, and you. Cosine similarity reached 19.1 percent and TF-IDF cosine 21.0 percent, both over twice the dot product, because they normalize for song length. TF-IDF also down-weights the generic words that appear in most songs, which the IDF table confirmed: the lowest IDF words were i, and, you, and me, while the highest IDF words were rare and distinctive like doo, funk, and German words such as wir and sie.
+
+To try to improve on TF-IDF cosine, I filtered the IDF by setting all values less than 1 to 0, removing the generic words entirely instead of just down-weighting them. This produced 20.8 percent, slightly lower than the 21.0 percent baseline. The result shows that the log scaling in TF-IDF was already suppressing the generic words enough, so hard-removing them cost some signal without adding accuracy.
+
+Overall the biggest gains came from normalizing for song length and down-weighting common words. Even the best system only reached about 21 percent, so genre is only partly captured by lyric word counts, but each analysis step exposed a specific weakness in the previous method: raw counts rewarded length, centering did not fix generic words, and correlation fixed length but not word importance.
